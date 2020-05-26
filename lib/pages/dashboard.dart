@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:covid_app/pages/pak.dart';
+import 'package:covid_app/pages/chi.dart';
+import 'package:covid_app/pages/nep.dart';
+import 'package:covid_app/pages/ban.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -87,7 +91,7 @@ class _DashboardState extends State<Dashboard> {
                       padding: EdgeInsets.only(top: 25),
                     ),
                     Text(
-                      'percent ratio'.toUpperCase(),
+                      'INDIA'.toUpperCase(),
                       style: TextStyle(
                         color: Theme.of(context).accentColor,
                         fontFamily: 'Bebas',
@@ -214,6 +218,7 @@ class _DashboardState extends State<Dashboard> {
                       achieved: snapshot.data.documents[4]['confirm'] - snapshot.data.documents[4]['recovered'],
                       color: Theme.of(context).primaryColor,
                       image: Image.asset('assets/img/pakistan.png', width: 30),
+                      link: 'pak',
                     ),
                     StatCard(
                       title: 'CHINA',
@@ -221,6 +226,7 @@ class _DashboardState extends State<Dashboard> {
                       achieved: snapshot.data.documents[1]['confirm'] - snapshot.data.documents[1]['recovered'],
                       color: Theme.of(context).primaryColor,
                       image: Image.asset('assets/img/china.png', width: 30),
+                      link: 'chi',
                     ),
                     StatCard(
                       title: 'NEPAL',
@@ -228,13 +234,15 @@ class _DashboardState extends State<Dashboard> {
                       achieved: snapshot.data.documents[3]['confirm'] - snapshot.data.documents[3]['recovered'],
                       color: Theme.of(context).primaryColor,
                       image: Image.asset('assets/img/srilanka.png', width: 30),
+                      link: 'nep',
                     ),
                     StatCard(
                       title: 'BANGLADESH',
                       total: snapshot.data.documents[0]['confirm'],
                       achieved: snapshot.data.documents[0]['confirm'] - snapshot.data.documents[0]['recovered'],
                       color: Theme.of(context).primaryColor,
-                      image: Image.asset('assets/img/bangladesh.png', width: 30)
+                      image: Image.asset('assets/img/bangladesh.png', width: 30),
+                      link: 'ban',
                     ),
                   ],
                 ),
@@ -255,6 +263,7 @@ class StatCard extends StatelessWidget {
   final int achieved;
   final Image image;
   final Color color;
+  final String link;
 
   const StatCard({
     Key key,
@@ -263,11 +272,13 @@ class StatCard extends StatelessWidget {
     @required this.achieved,
     @required this.image,
     @required this.color,
+    @required this.link,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return InkWell(
+      child: Container(
       width: 200,
       margin: EdgeInsets.only(right: 10),
       padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
@@ -330,7 +341,13 @@ class StatCard extends StatelessWidget {
           )
         ],
       ),
-    );
-  }
+    ),
+    onTap: () {                          
+        Navigator.push(
+    context,
+    link == 'pak' ? MaterialPageRoute(builder: (context) => Pak()): link == 'ban' ? MaterialPageRoute(builder: (context) => Ban()): link == 'chi' ? MaterialPageRoute(builder: (context) => Chi()): link == 'nep' ? MaterialPageRoute(builder: (context) => Nep()): "lol",
+  );
+        }, 
+      );
+    }
 }
-
